@@ -62,8 +62,14 @@ mvn test
 Fetch popular Java repositories, sorted by stars, since date:
 
 ```bash
-curl -X GET "http://localhost:8080/search/repositories/popular?top=100&since=2021-01-01&page=1" -H "accept: application/json"
+curl -X GET "http://localhost:8080/repositories/popular?top=100&since=2021-01-01&page=1" -H "accept: application/json"
 ```
+
+# Swagger Documentation
+The application provides a Swagger UI for easy API exploration. You can access it at http://localhost:8080/webjars/swagger-ui/index.html
+
+# API Specification
+Json format - http://localhost:8080/v3/api-docs
 
 # Features
 GitHub Repository Integration: Leverages GitHub's Search API to retrieve repository data. 
