@@ -65,11 +65,12 @@ Fetch popular Java repositories, sorted by stars, since date:
 Since date is mandatory. If not provided, you will get error response.
 
 **Optional query parameters:**
-top - Number of repositories to fetch. Default is 10.
 
-page - Page number. Default is 1.
+**_top_** - Number of repositories to fetch. Default is 10.
 
-language - Language filter. If not provided, it will fetch repositories of all languages.
+**_page_** - Page number. Default is 1.
+
+**_language_** - Language filter. If not provided, it will fetch repositories of all languages.
 
 
 ```bash
