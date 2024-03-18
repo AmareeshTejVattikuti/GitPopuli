@@ -19,13 +19,15 @@ public class PopularRepositoriesServiceImpl implements PopularRepositoriesServic
 
     private static final int DEFAULT_TOP = 10;
     private static final int DEFAULT_PAGE = 1;
+    private static final String DEFAULT_SORT = "stars";
+    private static final String DEFAULT_ORDER = "desc";
 
     @Override
     @Cacheable(cacheNames = "popularRepositories", key = "{#top, #language, #since, #page}")
     public Flux<Repository> getPopularRepositories(Optional<Integer> top, Optional<String> language, Optional<LocalDate> since, Optional<Integer> page) {
         String query = buildQuery(language, since);
 
-        return gitHubApiClient.searchRepositories(query, "stars", "desc", top.orElse(DEFAULT_TOP), page.orElse(DEFAULT_PAGE));
+        return gitHubApiClient.searchRepositories(query, DEFAULT_SORT, DEFAULT_ORDER, top.orElse(DEFAULT_TOP), page.orElse(DEFAULT_PAGE));
     }
 
     private String buildQuery(Optional<String> language, Optional<LocalDate> since) {
