@@ -72,5 +72,3 @@ Flexible Query Parameters: Allows customization of search queries using criteria
 
 Exception Handling: Implements custom exception handling for clear, actionable client-side errors.
 
-Rate Limiting: Throttles requests to GitHub's API to stay within the rate limit guidelines.
-
