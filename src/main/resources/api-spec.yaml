@@ -1,0 +1,85 @@
+openapi: 3.0.0
+info:
+  title: Popular GitHub Repositories API
+  version: 1.0.0
+servers:
+  - url: /api
+paths:
+  /repositories/popular:
+    get:
+      tags:
+        - PopularRepos
+      operationId: getPopularRepositories
+      summary: Retrieves a list of the most popular GitHub repositories.
+      parameters:
+        - in: query
+          name: top
+          schema:
+            type: integer
+            default: 10
+          description: "Number of repositories to return."
+        - in: query
+          name: language
+          schema:
+            type: string
+          description: "Programming language filter."
+        - in: query
+          name: since
+          schema:
+            type: string
+            format: date
+            example: "2019-01-01"
+          description: "Fetch repositories created from this date onwards."
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: "Page number."
+      responses:
+        '200':
+          description: A list of popular repositories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RepositoryList'
+        '400':
+          description: Bad request if query parameters are invalid
+        '500':
+          description: Internal server error
+
+components:
+  schemas:
+    Page:
+      type: object
+      properties:
+        number:
+          type: integer
+          description: "Current page number."
+        size:
+          type: integer
+          description: "Number of items in the page."
+    Repository:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: "Unique identifier for the repository."
+        name:
+          type: string
+          description: "Name of the repository."
+        url:
+          type: string
+          format: uri
+          description: "URL of the repository."
+        stars:
+          type: integer
+          description: "Number of stars the repository has on GitHub."
+        language:
+          type: string
+          description: "Primary programming language used in the repository."
+    RepositoryList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Repository'

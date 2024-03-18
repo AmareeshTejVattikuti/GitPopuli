@@ -1,0 +1,16 @@
+spring:
+    application:
+        name: gitpopuli
+    codec:
+        max-in-memory-size: 1MB
+    cache:
+        cache-names: popularRepositories
+
+github:
+    url: https://api.github.com/search/repositories
+
+management:
+    endpoints:
+        web:
+            exposure:
+                include: "*"
