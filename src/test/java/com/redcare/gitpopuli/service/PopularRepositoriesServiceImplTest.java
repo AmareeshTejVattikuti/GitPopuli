@@ -2,6 +2,7 @@ package com.redcare.gitpopuli.service;
 
 import com.redcare.gitpopuli.client.GitHubApiClient;
 import com.redcare.gitpopuli.model.Repository;
+import com.redcare.gitpopuli.service.impl.PopularRepositoriesServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,17 +20,17 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class PopularRepositoriesServiceTest {
+class PopularRepositoriesServiceImplTest {
 
     @Mock
     private GitHubApiClient gitHubApiClient;
 
     @InjectMocks
-    private PopularRepositoriesService service;
+    private PopularRepositoriesServiceImpl service;
 
     @BeforeEach
     public void setup() {
-        service = new PopularRepositoriesService(gitHubApiClient);
+        service = new PopularRepositoriesServiceImpl(gitHubApiClient);
     }
 
     @Test
