@@ -61,9 +61,18 @@ mvn test
 # Usage
 Fetch popular Java repositories, sorted by stars, since date:
 
+**Mandatory query parameters:**
+Since date is mandatory. If not provided, it will throw exception.
+
+**Optional query parameters:**
+top - Number of repositories to fetch. Default is 10.
+page - Page number. Default is 1.
+language - Language filter. If not provided, it will fetch repositories of all languages.
+
 ```bash
-curl -X GET "http://localhost:8080/repositories/popular?top=100&since=2021-01-01&page=1" -H "accept: application/json"
+curl -X GET "http://localhost:8080/repositories/popular?top=100&since=2021-01-01&page=1&language=Python" -H "accept: application/json"
 ```
+
 
 # Swagger Documentation
 The application provides a Swagger UI for easy API exploration. You can access it at http://localhost:8080/webjars/swagger-ui/index.html

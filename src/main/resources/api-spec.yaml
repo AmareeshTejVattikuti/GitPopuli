@@ -45,8 +45,6 @@ paths:
                 $ref: '#/components/schemas/RepositoryList'
         '400':
           description: Bad request if query parameters are invalid
-        '500':
-          description: Internal server error
 
 components:
   schemas:
