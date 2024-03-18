@@ -16,6 +16,8 @@ The core of this project revolves around creating a RESTful API that interacts w
 - Java 17 or higher
 - Spring Boot 3.2.x
 - Maven 3.x.x
+- Open API
+- Spring doc
 - Mockito
 - JUnit 5
 - WebFlux
@@ -62,6 +64,7 @@ mvn test
 Fetch popular Java repositories, sorted by stars, since date:
 
 **Mandatory query parameters:**
+
 Since date is mandatory. If not provided, you will get error response.
 
 **Optional query parameters:**
@@ -82,7 +85,11 @@ curl -X GET "http://localhost:8080/repositories/popular?top=100&since=2021-01-01
 The application provides a Swagger UI for easy API exploration. You can access it at http://localhost:8080/webjars/swagger-ui/index.html
 
 # API Specification
-Json format - http://localhost:8080/v3/api-docs
+
+Specification file can be found under Resources - src/main/resources/api-spec.yaml
+
+Can be accessed in Json format at - http://localhost:8080/v3/api-docs
+
 
 # Features
 GitHub Repository Integration: Leverages GitHub's Search API to retrieve repository data. 
@@ -90,4 +97,3 @@ GitHub Repository Integration: Leverages GitHub's Search API to retrieve reposit
 Flexible Query Parameters: Allows customization of search queries using criteria like language, sort order, and update date.
 
 Exception Handling: Implements custom exception handling for clear, actionable client-side errors.
-
