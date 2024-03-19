@@ -1,10 +1,8 @@
 package com.redcare.gitpopuli.exception;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.time.format.DateTimeParseException;
 import java.util.Map;
@@ -17,17 +15,16 @@ class CustomGlobalExceptionHandlerTest {
     private final CustomGlobalExceptionHandler exceptionHandler = new CustomGlobalExceptionHandler();
 
     @Test
-    void testHandleWebClientResponseException() {
-        WebClientResponseException ex = new WebClientResponseException(
-                401, "Unauthorized", HttpHeaders.EMPTY, null, null);
+    void testGitHubApiException() {
+        GitHubApiException ex = new GitHubApiException("Error calling GitHub API, please try after sometime");
 
-        ResponseEntity<Object> response = exceptionHandler.handleWebClientResponseException(ex);
+        ResponseEntity<Object> response = exceptionHandler.handleGitHubApiException(ex);
 
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(HttpStatus.BAD_GATEWAY, response.getStatusCode());
         Map<String, String> body = (Map<String, String>) response.getBody();
         assert body != null;
         System.out.println(body.values());
-        assertTrue(body.containsValue("401 UNAUTHORIZED - You are not allowed to access the required information, please try after sometime"));
+        assertTrue(body.containsValue("Error calling GitHub API, please try after sometime"));
     }
 
     @Test

@@ -35,16 +35,8 @@ class PopularRepositoriesServiceImplTest {
 
     @Test
     void testGetPopularRepositories() {
-        Repository repository1 = new Repository();
-        repository1.setName(Optional.of("repo1"));
-        repository1.setUrl(Optional.of(URI.create("https://github.com/repo1")));
-        repository1.setStars(Optional.of(100));
-        repository1.setLanguage(Optional.of("Java"));
-        Repository repository2 = new Repository();
-        repository2.setName(Optional.of("repo2"));
-        repository2.setUrl(Optional.of(URI.create("https://github.com/repo2")));
-        repository2.setStars(Optional.of(200));
-        repository2.setLanguage(Optional.of("Go"));
+        Repository repository1 = prepareRepository("repo1", "https://github.com/repo1", 100, "Java");
+        Repository repository2 = prepareRepository("repo2", "https://github.com/repo2", 200, "Go");
         Flux<Repository> mockResponse = Flux.just(repository1, repository2);
         when(gitHubApiClient.searchRepositories(anyString(), anyString(), anyString(), anyInt(), anyInt()))
                 .thenReturn(mockResponse);
@@ -56,5 +48,14 @@ class PopularRepositoriesServiceImplTest {
                 .expectNext(repository1)
                 .expectNext(repository2)
                 .verifyComplete();
+    }
+
+    private Repository prepareRepository(String name, String url, int stars, String language) {
+        Repository repository = new Repository();
+        repository.setName(Optional.of(name));
+        repository.setUrl(Optional.of(URI.create(url)));
+        repository.setStars(Optional.of(stars));
+        repository.setLanguage(Optional.of(language));
+        return repository;
     }
 }

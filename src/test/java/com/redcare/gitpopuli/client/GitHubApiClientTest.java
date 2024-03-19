@@ -1,12 +1,15 @@
 package com.redcare.gitpopuli.client;
 
+import com.redcare.gitpopuli.client.impl.GitHubApiClientImpl;
 import com.redcare.gitpopuli.config.GitHubConfig;
 import com.redcare.gitpopuli.model.GitHubSearchResponse;
 import com.redcare.gitpopuli.model.Repository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriBuilder;
@@ -46,26 +49,33 @@ class GitHubApiClientTest {
 
     private GitHubApiClient gitHubApiClient;
 
+    private static final String GIT_URL = "https://api.github.com/search/repositories";
+    private static final String QUERY = "test";
+    private static final String SORT = "stars";
+    private static final String ORDER = "desc";
+    private static final int PER_PAGE = 10;
+    private static final int PAGE = 1;
+    private static final String API_ERROR = "API Error";
+
     @BeforeEach
     void setUp() {
-        when(gitHubConfig.getGitUrl()).thenReturn("https://api.github.com/search/repositories");
+        when(gitHubConfig.getGitUrl()).thenReturn(GIT_URL);
         when(webClientBuilder.baseUrl(any(String.class))).thenReturn(webClientBuilder);
         when(webClientBuilder.build()).thenReturn(webClient);
         when(webClient.get()).thenReturn(requestHeadersUriSpec);
         when(requestHeadersUriSpec.uri((Function<UriBuilder, URI>) any())).thenReturn(requestHeadersSpec);
         when(requestHeadersSpec.retrieve()).thenReturn(responseSpec);
 
-        gitHubApiClient = new GitHubApiClient(webClientBuilder, gitHubConfig);
+        gitHubApiClient = new GitHubApiClientImpl(webClientBuilder, gitHubConfig);
     }
 
     @Test
     void testSearchRepositories() {
-        GitHubSearchResponse mockResponse = new GitHubSearchResponse();
-        mockResponse.setItems(Flux.just(new Repository()).collectList().block());
-
+        GitHubSearchResponse mockResponse = new GitHubSearchResponse(1,Flux.just(new Repository()).collectList().block());
+        when(responseSpec.onStatus(any(), any())).thenReturn(responseSpec);
         when(responseSpec.bodyToMono(GitHubSearchResponse.class)).thenReturn(Mono.just(mockResponse));
 
-        Flux<Repository> result = gitHubApiClient.searchRepositories("test", "stars", "desc", 10, 1);
+        Flux<Repository> result = gitHubApiClient.searchRepositories(QUERY, SORT, ORDER, PER_PAGE, PAGE);
 
         StepVerifier.create(result)
                 .expectNextMatches(repository -> true)
@@ -74,13 +84,15 @@ class GitHubApiClientTest {
 
     @Test
     void testSearchRepositoriesApiError() {
-        when(responseSpec.bodyToMono(GitHubSearchResponse.class)).thenReturn(Mono.error(new RuntimeException("API Error")));
+        when(responseSpec.onStatus(any(), any())).thenReturn(responseSpec);
+        when(responseSpec.bodyToMono(GitHubSearchResponse.class)).thenReturn(Mono.error(new RuntimeException(API_ERROR)));
 
-        Flux<Repository> result = gitHubApiClient.searchRepositories("test", "stars", "desc", 10, 1);
+        Flux<Repository> result = gitHubApiClient.searchRepositories(QUERY, SORT, ORDER, PER_PAGE, PAGE);
 
         StepVerifier.create(result)
                 .expectErrorMatches(throwable -> throwable instanceof RuntimeException
-                        && throwable.getMessage().equals("API Error"))
+                        && throwable.getMessage().equals(API_ERROR))
                 .verify();
     }
+
 }

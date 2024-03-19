@@ -4,6 +4,7 @@ import com.redcare.gitpopuli.client.GitHubApiClient;
 import com.redcare.gitpopuli.model.Repository;
 import com.redcare.gitpopuli.service.PopularRepositoriesService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -11,6 +12,7 @@ import reactor.core.publisher.Flux;
 import java.time.LocalDate;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PopularRepositoriesServiceImpl implements PopularRepositoriesService {
@@ -26,7 +28,7 @@ public class PopularRepositoriesServiceImpl implements PopularRepositoriesServic
     @Cacheable(cacheNames = "popularRepositories", key = "{#top, #language, #since, #page}")
     public Flux<Repository> getPopularRepositories(Optional<Integer> top, Optional<String> language, Optional<LocalDate> since, Optional<Integer> page) {
         String query = buildQuery(language, since);
-
+        log.info("Building GitHub search query: {}", query);
         return gitHubApiClient.searchRepositories(query, DEFAULT_SORT, DEFAULT_ORDER, top.orElse(DEFAULT_TOP), page.orElse(DEFAULT_PAGE));
     }
 

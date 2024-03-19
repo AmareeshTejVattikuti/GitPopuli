@@ -1,15 +1,8 @@
 package com.redcare.gitpopuli.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-@Getter
-@Setter
-public class GitHubSearchResponse {
-    private int totalCount;
-    private boolean incompleteResults;
-    private List<Repository> items;
-
+public record GitHubSearchResponse(@JsonProperty("total_count") int totalCount, List<Repository> items) {
 }
