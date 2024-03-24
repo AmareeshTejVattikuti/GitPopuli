@@ -3,7 +3,6 @@ package com.redcare.gitpopuli.service;
 import com.redcare.gitpopuli.client.GitHubApiClient;
 import com.redcare.gitpopuli.model.Repository;
 import com.redcare.gitpopuli.service.impl.PopularRepositoriesServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,11 +26,6 @@ class PopularRepositoriesServiceImplTest {
 
     @InjectMocks
     private PopularRepositoriesServiceImpl service;
-
-    @BeforeEach
-    public void setup() {
-        service = new PopularRepositoriesServiceImpl(gitHubApiClient);
-    }
 
     @Test
     void testGetPopularRepositories() {
