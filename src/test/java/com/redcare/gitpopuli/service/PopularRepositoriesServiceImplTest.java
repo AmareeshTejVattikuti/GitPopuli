@@ -54,7 +54,7 @@ class PopularRepositoriesServiceImplTest {
         Repository repository = new Repository();
         repository.setName(Optional.of(name));
         repository.setUrl(Optional.of(URI.create(url)));
-        repository.setStars(Optional.of(stars));
+        repository.setWatchers(Optional.of(stars));
         repository.setLanguage(Optional.of(language));
         return repository;
     }

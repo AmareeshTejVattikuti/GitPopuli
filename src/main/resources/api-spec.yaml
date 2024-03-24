@@ -71,7 +71,7 @@ components:
           type: string
           format: uri
           description: "URL of the repository."
-        stars:
+        watchers:
           type: integer
           description: "Number of stars the repository has on GitHub."
         language:
